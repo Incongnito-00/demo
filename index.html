@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Colorful Age Calculator</title>
+  <title>Colorful Age Calculator — Sankar Seshapu</title>
+  <meta name="description" content="Beautiful, privacy-first age calculator. Enter DOB + optional time to get exact years, months, days, next birthday and zodiac."/>
   <style>
     :root{
       --bg-1: linear-gradient(135deg,#ff7eb3 0%, #65d6ff 50%, #b3ffab 100%);
@@ -22,17 +23,17 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:32px;
+      padding:28px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
 
     .container{
       width:100%;
-      max-width:920px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.7));
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82));
       border-radius: calc(var(--radius) + 6px);
-      padding:28px;
+      padding:26px;
       box-shadow: var(--shadow);
       display:grid;
       grid-template-columns: 1fr 420px;
@@ -49,11 +50,9 @@
     .blob.two{width:300px;height:300px;background:radial-gradient(circle at 70% 60%, #c8f7ff, transparent 40%);right:2%;bottom:5%}
 
     h1{margin:0;font-size:22px;color:#1b1b2f}
-    p.lead{margin:8px 0 24px;color:#2a2a3a;opacity:0.9}
+    p.lead{margin:8px 0 18px;color:#2a2a3a;opacity:0.95}
 
-    .left{
-      padding:20px 12px 12px 12px;
-    }
+    .left{padding:18px 12px 12px 12px}
 
     .form-row{display:flex;gap:12px;margin-bottom:12px}
     label{display:block;font-size:13px;color:#222;margin-bottom:6px}
@@ -63,7 +62,7 @@
 
     .actions{display:flex;gap:12px;margin-top:12px}
     button{
-      padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:600;font-size:15px;box-shadow:var(--shadow);
+      padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:700;font-size:15px;box-shadow:var(--shadow);
       transition:transform .14s cubic-bezier(.2,.9,.2,1), box-shadow .14s;
     }
     button:active{transform:translateY(2px)}
@@ -73,48 +72,52 @@
 
     /* Right panel - results */
     .right{
-      padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.8));min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px
+      padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative;
     }
 
     .result-capsule{display:flex;gap:10px;align-items:center}
-    .age-pill{background:var(--glass);padding:12px 18px;border-radius:999px;font-weight:800;font-size:20px;display:inline-flex;align-items:center;gap:10px}
-    .meta{font-size:13px;color:#333;opacity:0.9}
+    .age-pill{background:var(--glass);padding:12px 18px;border-radius:999px;font-weight:800;font-size:18px;display:inline-flex;align-items:center;gap:10px}
+    .meta{font-size:13px;color:#333;opacity:0.92}
 
     .big-number{font-size:56px;font-weight:900;background: linear-gradient(90deg,#212121,#6c63ff);-webkit-background-clip:text;background-clip:text;color:transparent}
 
-    /* fun icons and small details */
     .small{font-size:12px;color:#444}
-    .note{margin-top:8px;font-size:13px;color:#333;opacity:0.8}
+    .note{margin-top:8px;font-size:13px;color:#333;opacity:0.85}
+
+    /* developer card at bottom of right panel */
+    .dev-card{position:absolute;left:16px;right:16px;bottom:12px;background:rgba(12,12,30,0.03);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:13px}
+    .dev-card a{color:var(--accent);text-decoration:none;font-weight:700}
 
     /* responsive */
     @media (max-width:880px){
       .container{grid-template-columns:1fr;}
-      .right{order: -1}
+      .right{order:-1}
+      .dev-card{position:static;margin-top:12px}
     }
 
     /* confetti canvas covers container */
     canvas.confetti{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 
-    footer{position:absolute;right:12px;bottom:10px;font-size:12px;color:#333;opacity:0.6}
+    footer.page-footer{position:absolute;right:14px;bottom:10px;font-size:12px;color:#333;opacity:0.6}
   </style>
 </head>
 <body>
-  <div class="container" role="application" aria-label="Colorful age calculator">
+  <div class="container" role="application" aria-label="Age calculator ">
     <div class="blob one" aria-hidden></div>
     <div class="blob two" aria-hidden></div>
 
-    <canvas class="confetti" id="confettiCanvas"></canvas>
+    <canvas class="confetti" id="confettiCanvas" aria-hidden="true"></canvas>
 
     <div class="left">
       <h1>🌈 Colorful Age Calculator</h1>
-      <p class="lead">Enter your date of birth and get your exact age in years, months, days — plus fun extras!</p>
+      <p class="lead">Enter your date of birth (and optional time) to get exact age in years, months, days — plus next birthday and zodiac. Calculations run locally in your browser; no data leaves your device.</p>
 
       <div>
         <label for="dob">Your date of birth</label>
         <input id="dob" type="date" aria-label="Date of birth input" />
       </div>
 
-      <div class="form-row">
+      <div class="form-row" style="margin-top:10px">
         <div style="flex:1">
           <label for="hour">Hour</label>
           <input id="hour" type="number" min="0" max="23" placeholder="HH" />
@@ -129,12 +132,12 @@
         </div>
       </div>
 
-      <div class="actions">
-        <button class="btn-calc" id="calcBtn">Calculate Age</button>
-        <button class="btn-reset" id="resetBtn">Reset</button>
+      <div class="actions" aria-hidden>
+        <button class="btn-calc" id="calcBtn" title="Calculate age">Calculate Age</button>
+        <button class="btn-reset" id="resetBtn" title="Reset form">Reset</button>
       </div>
 
-      <p class="note">Tip: leave time fields blank to calculate based on midnight of the selected date.</p>
+      <p class="note">Tip: leave time fields blank to calculate based on midnight of the selected date. Max allowed date is today.</p>
     </div>
 
     <div class="right" aria-live="polite">
@@ -143,7 +146,7 @@
         <div class="meta">Years old</div>
       </div>
 
-      <div class="result-capsule">
+      <div class="result-capsule" role="status" aria-atomic="true">
         <div class="age-pill" id="yrs">0 yrs</div>
         <div class="age-pill" id="mos">0 mos</div>
         <div class="age-pill" id="days">0 days</div>
@@ -156,7 +159,19 @@
 
       <div class="note">Want a printable card? Press <strong>Ctrl/Cmd + P</strong> to print this page.</div>
 
-      <footer>Made with ✨ and JavaScript</footer>
+      <!-- developer contact card -->
+      <div class="dev-card" aria-hidden="false">
+        <div>
+          <div style="font-weight:800">Developer: Sankar Seshapu</div>
+          <div style="font-size:12px;color:#333;margin-top:6px">Privacy: calculations done locally — no storage.</div>
+        </div>
+        <div style="text-align:right">
+          <div><a href="mailto:sankarseshapu02@gmail.com">sankarseshapu02@gmail.com</a></div>
+          <div style="font-size:13px;margin-top:6px"><a href="tel:+916300348255">+91 63003 48255</a></div>
+        </div>
+      </div>
+
+      <footer class="page-footer">Developed by Sankar Seshapu</footer>
     </div>
   </div>
 
@@ -173,6 +188,7 @@
       let d = toDate.getDate() - fromDate.getDate();
 
       if(d < 0){
+        // days in previous month of 'toDate'
         const prevMonth = new Date(toDate.getFullYear(), toDate.getMonth(), 0).getDate();
         d += prevMonth;
         m -= 1;
@@ -185,7 +201,9 @@
     }
 
     function daysUntilNextBirthday(dobDate, fromDate){
+      // next birthday (date-only) calculation
       const thisYear = new Date(fromDate.getFullYear(), dobDate.getMonth(), dobDate.getDate());
+      // preserve time-of-day for accuracy: compare actual time difference
       if(thisYear >= fromDate) return Math.ceil((thisYear - fromDate) / (1000*60*60*24));
       const next = new Date(fromDate.getFullYear()+1, dobDate.getMonth(), dobDate.getDate());
       return Math.ceil((next - fromDate) / (1000*60*60*24));
@@ -194,28 +212,34 @@
     function getZodiac(d){
       const day = d.getDate();
       const month = d.getMonth()+1; // 1-12
-      const zodiac = [
-        ['Capricorn',1,20],['Aquarius',2,19],['Pisces',3,21],['Aries',4,20],['Taurus',5,21],['Gemini',6,21],
-        ['Cancer',7,23],['Leo',8,23],['Virgo',9,23],['Libra',10,23],['Scorpio',11,22],['Sagittarius',12,22]
+
+      // precise Western zodiac ranges
+      const ranges = [
+        {name:'Capricorn', start:{m:12,d:22}, end:{m:1,d:19}, emoji:'🧊'},
+        {name:'Aquarius',  start:{m:1,d:20},  end:{m:2,d:18}, emoji:'🌬️'},
+        {name:'Pisces',    start:{m:2,d:19},  end:{m:3,d:20}, emoji:'🌊'},
+        {name:'Aries',     start:{m:3,d:21},  end:{m:4,d:19}, emoji:'🔥'},
+        {name:'Taurus',    start:{m:4,d:20},  end:{m:5,d:20}, emoji:'🌿'},
+        {name:'Gemini',    start:{m:5,d:21},  end:{m:6,d:20}, emoji:'🌀'},
+        {name:'Cancer',    start:{m:6,d:21},  end:{m:7,d:22}, emoji:'🌕'},
+        {name:'Leo',       start:{m:7,d:23},  end:{m:8,d:22}, emoji:'☀️'},
+        {name:'Virgo',     start:{m:8,d:23},  end:{m:9,d:22}, emoji:'✨'},
+        {name:'Libra',     start:{m:9,d:23},  end:{m:10,d:22}, emoji:'⚖️'},
+        {name:'Scorpio',   start:{m:10,d:23}, end:{m:11,d:21}, emoji:'🦂'},
+        {name:'Sagittarius',start:{m:11,d:22}, end:{m:12,d:21}, emoji:'🏹'}
       ];
-      for(let i=0;i<zodiac.length;i++){
-        const [name,m,dayCut] = zodiac[i];
-        if(month === m && day <= dayCut) return name;
-        const prev = (i-1+zodiac.length)%zodiac.length;
-        // if date is after dayCut of previous month
+
+      const val = month*100 + day;
+      for(const z of ranges){
+        const s = z.start.m*100 + z.start.d;
+        const e = z.end.m*100 + z.end.d;
+        if(s <= e){
+          if(val >= s && val <= e) return `${z.emoji} ${z.name}`;
+        } else {
+          // wrap (Capricorn)
+          if(val >= s || val <= e) return `${z.emoji} ${z.name}`;
+        }
       }
-      // fallback naive: use simple ranges
-      if((month==3 && day>=21) || (month==4 && day<=20)) return 'Aries';
-      if((month==4 && day>=21) || (month==5 && day<=21)) return 'Taurus';
-      if((month==5 && day>=22) || (month==6 && day<=21)) return 'Gemini';
-      if((month==6 && day>=22) || (month==7 && day<=22)) return 'Cancer';
-      if((month==7 && day>=23) || (month==8 && day<=23)) return 'Leo';
-      if((month==8 && day>=24) || (month==9 && day<=23)) return 'Virgo';
-      if((month==9 && day>=24) || (month==10 && day<=23)) return 'Libra';
-      if((month==10 && day>=24) || (month==11 && day<=22)) return 'Scorpio';
-      if((month==11 && day>=23) || (month==12 && day<=21)) return 'Sagittarius';
-      if((month==12 && day>=22) || (month==1 && day<=20)) return 'Capricorn';
-      if((month==1 && day>=21) || (month==2 && day<=18)) return 'Aquarius';
       return '—';
     }
 
@@ -246,14 +270,15 @@
     function parseDOB(){
       const dobVal = dobInput.value;
       if(!dobVal) return null;
-      const dt = new Date(dobVal);
-      // Time
+      // construct date using local timezone, respecting optional time fields
+      const [y,mo,da] = dobVal.split('-').map(Number);
+      const dt = new Date(y, mo-1, da, 0, 0, 0, 0);
       const hh = parseInt(hInput.value);
       const mm = parseInt(mInput.value);
       const ss = parseInt(sInput.value);
-      if(!isNaN(hh)) dt.setHours(hh);
-      if(!isNaN(mm)) dt.setMinutes(mm);
-      if(!isNaN(ss)) dt.setSeconds(ss);
+      if(!isNaN(hh)) dt.setHours(Math.max(0, Math.min(23, hh)));
+      if(!isNaN(mm)) dt.setMinutes(Math.max(0, Math.min(59, mm)));
+      if(!isNaN(ss)) dt.setSeconds(Math.max(0, Math.min(59, ss)));
       return dt;
     }
 
@@ -272,11 +297,11 @@
       const next = daysUntilNextBirthday(dob, now);
       const z = getZodiac(dob);
       showResults(age, next, z);
-      // celebrate if it's someone's birthday (0 days until next)
+
+      // celebrate if it's birthday today or if milestone (decade)
       if(next === 0){
         triggerConfetti();
       } else if(age && age.years>0 && age.years%10===0){
-        // milestone celebration for 10,20,30...
         triggerConfetti();
       }
     }
@@ -291,9 +316,7 @@
 
     calcBtn.addEventListener('click', handleCalculate);
     resetBtn.addEventListener('click', handleReset);
-
-    // keyboard: Enter triggers calculate when in date field
-    dobInput.addEventListener('keydown', (e)=>{if(e.key==='Enter') handleCalculate()});
+    dobInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') handleCalculate() });
 
     // Confetti implementation (lightweight)
     const confettiCanvas = document.getElementById('confettiCanvas');
@@ -302,6 +325,7 @@
     function resizeCanvas(){
       confettiCanvas.width = confettiCanvas.clientWidth * devicePixelRatio;
       confettiCanvas.height = confettiCanvas.clientHeight * devicePixelRatio;
+      ctx.setTransform(1,0,0,1,0,0);
       ctx.scale(devicePixelRatio, devicePixelRatio);
     }
     window.addEventListener('resize', resizeCanvas);
@@ -312,7 +336,14 @@
       confettiPieces = [];
       const count = 80;
       for(let i=0;i<count;i++){
-        confettiPieces.push({x: random(0,confettiCanvas.clientWidth), y: random(-200,0), r: random(6,12), tilt: random(-0.3,0.6), color: `hsl(${~~random(0,360)},90%,60%)`, speed: random(1,4)})
+        confettiPieces.push({
+          x: random(0,confettiCanvas.clientWidth),
+          y: random(-200,0),
+          r: random(6,12),
+          tilt: random(-0.3,0.6),
+          color: `hsl(${~~random(0,360)},90%,60%)`,
+          speed: random(1,4)
+        });
       }
       animateConfetti();
     }
@@ -353,7 +384,7 @@
     // initialize
     showResults(null,null,null);
 
-    // small accessibility improvement: set max to today
+    // set max date to today to prevent future DOB
     (function setMaxDate(){
       const today = new Date();
       const yyyy = today.getFullYear();
@@ -365,3 +396,4 @@
   </script>
 </body>
 </html>
+
